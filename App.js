@@ -15,19 +15,22 @@ import FavoritesScreen from './src/screens/FavoritesScreen';
 import SearchMoviesScreen from './src/screens/SearchMoviesScreen';
 import MovieDetailsScreen from './src/screens/MovieDetailsScreen';
 import NetworkWrapper from './src/components/NetworkWrapper';
+import ErrorWrapper from './src/components/ErrorWrapper';
 
 const Stack = createNativeStackNavigator();
 
 const App: () => Node = () => (
-  <NetworkWrapper>
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name={'Favorites'} component={FavoritesScreen} />
-        <Stack.Screen name={'Search Movies'} component={SearchMoviesScreen} />
-        <Stack.Screen name={'Movie Details'} component={MovieDetailsScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  </NetworkWrapper>
+  <ErrorWrapper>
+    <NetworkWrapper>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name={'Favorites'} component={FavoritesScreen} />
+          <Stack.Screen name={'Search Movies'} component={SearchMoviesScreen} />
+          <Stack.Screen name={'Movie Details'} component={MovieDetailsScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </NetworkWrapper>
+  </ErrorWrapper>
 );
 
 export default App;

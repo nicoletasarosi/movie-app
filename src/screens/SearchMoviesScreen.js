@@ -8,8 +8,9 @@ import {
 } from 'react-native';
 import {getMoviesByName} from '../api/movie';
 import MovieCard from '../components/MovieCard';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {selectHidden} from '../redux/selectors';
+import {setErrorAction} from '../redux/actions';
 
 const SearchMoviesScreen = ({navigation}) => {
   const [searchText, setSearchText] = useState('');
@@ -17,6 +18,7 @@ const SearchMoviesScreen = ({navigation}) => {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const hiddenMovies = useSelector(selectHidden);
+  const dispatch = useDispatch();
 
   const filterMovies = useCallback(
     movies => {
@@ -30,11 +32,15 @@ const SearchMoviesScreen = ({navigation}) => {
 
   const searchMovie = useCallback(async () => {
     setIsLoading(true);
-    const response = await getMoviesByName(searchText, page);
-    const filteredMovies = filterMovies(response.Search);
-    setMovies(filteredMovies);
+    try {
+      const response = await getMoviesByName(searchText, page);
+      const filteredMovies = filterMovies(response.Search);
+      setMovies(filteredMovies);
+    } catch (e) {
+      dispatch(setErrorAction('Something went wrong! Try again'));
+    }
     setIsLoading(false);
-  }, [filterMovies, page, searchText]);
+  }, [dispatch, filterMovies, page, searchText]);
 
   const renderListItem = ({item}) => {
     return (

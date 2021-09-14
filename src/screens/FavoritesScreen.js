@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,18 +14,26 @@ import {getMovieById} from '../api/movie';
 import {Heading1} from '../typography/Headlines';
 import {BodyText2} from '../typography/BodyTexts';
 import {selectFavorites} from '../redux/selectors';
+import {setErrorAction} from '../redux/actions';
 
 const FavoritesScreen = ({navigation}) => {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const favoriteMoviesIds = useSelector(selectFavorites);
+  const dispatch = useDispatch();
 
   const getFavouriteMovies = async () => {
     setIsLoading(true);
-    const moviesData = await Promise.all(
-      favoriteMoviesIds.map(id => getMovieById(id)),
-    );
-    setMovies(moviesData);
+    try {
+      const moviesData = await Promise.all(
+        favoriteMoviesIds.map(id => getMovieById(id)),
+      );
+      setMovies(moviesData);
+    } catch (e) {
+      dispatch(
+        setErrorAction('Something went wrong while fetching favorite movies'),
+      );
+    }
     setIsLoading(false);
   };
 

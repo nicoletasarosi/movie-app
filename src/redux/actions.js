@@ -3,6 +3,7 @@ import {
   ADD_HIDDEN,
   REMOVE_FAVORITE,
   REMOVE_HIDDEN,
+  SET_ERROR,
 } from './actionTypes';
 
 export const removeFavoriteAction = movieId => ({
@@ -30,5 +31,12 @@ export const addHiddenAction = movieId => ({
   type: ADD_HIDDEN,
   payload: {
     id: movieId,
+  },
+});
+
+export const setErrorAction = error => ({
+  type: SET_ERROR,
+  payload: {
+    error,
   },
 });

@@ -5,11 +5,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import Button from '../components/Button';
 import {getMovieById} from '../api/movie';
 import {Heading2} from '../typography/Headlines';
-import {
-  BodyText2,
-  BodyText3,
-  BodyText4,
-} from '../typography/BodyTexts';
+import {BodyText2, BodyText3, BodyText4} from '../typography/BodyTexts';
 import {Subtitle2} from '../typography/UtilityTexts';
 import {selectFavorites, selectHidden} from '../redux/selectors';
 import {
@@ -17,6 +13,7 @@ import {
   addFavoriteAction,
   removeHiddenAction,
   addHiddenAction,
+  setErrorAction,
 } from '../redux/actions';
 
 const MovieDetailsScreen = ({route}) => {
@@ -32,8 +29,12 @@ const MovieDetailsScreen = ({route}) => {
 
   const getMovieData = async () => {
     setIsLoading(true);
-    const response = await getMovieById(movieId);
-    setMovie(response);
+    try {
+      const response = await getMovieById(movieId);
+      setMovie(response);
+    } catch (e) {
+      dispatch(setErrorAction('Something went wrong! Please try again'));
+    }
     const isFav = favoriteMoviesIds.indexOf(movieId) >= 0;
     const isHidd = hiddenMoviesIds.indexOf(movieId) >= 0;
     setIsFavourite(isFav);

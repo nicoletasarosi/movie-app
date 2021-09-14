@@ -1,9 +1,9 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import NetInfo from '@react-native-community/netinfo';
-import {Snackbar} from 'react-native-paper';
+import Notification from './Notification';
 
 const NetworkWrapper = ({children}) => {
-  const [visible, setVisible] = React.useState(false);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const handleConnectivityChange = state => {
@@ -15,9 +15,11 @@ const NetworkWrapper = ({children}) => {
   }, []);
   return (
     <>
-      <Snackbar visible={visible}>
-        Internet Problem! Please check your internet connection!
-      </Snackbar>
+      <Notification
+        visible={visible}
+        message={'Internet Problem! Please check your internet connection!'}
+        onDismiss={() => setVisible(false)}
+      />
       {children}
     </>
   );

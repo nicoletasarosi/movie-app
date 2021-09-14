@@ -3,11 +3,13 @@ import {
   ADD_HIDDEN,
   REMOVE_FAVORITE,
   REMOVE_HIDDEN,
+  SET_ERROR,
 } from './actionTypes';
 
 const INITIAL_STATE = {
   favorites: [],
   hiddenItems: [],
+  error: '',
 };
 
 const appReducer = (state = INITIAL_STATE, action) => {
@@ -38,6 +40,11 @@ const appReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         hiddenItems: [...hiddenItems, action.payload.id],
+      };
+    case SET_ERROR:
+      return {
+        ...state,
+        error: action.payload.error,
       };
     default:
       return state;
